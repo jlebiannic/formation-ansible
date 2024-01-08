@@ -1,0 +1,37 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name:     Retrieve petclinic endpoint content
+    shell:    curl http://localhost:{{ petclinic_lb__port }}
+    register: petclinic_endpoint_content
+
+  # - name:     Display petclinic_endpoint_content
+    # debug:
+      # msg: '{{petclinic_endpoint_content}}'
+
+  - name:     Ensure petclinic endpoint content is correct
+    assert:
+      that:
+        - (petclinic_endpoint_content.stdout | lower) is regex("502 bad gateway")
+      msg: |
+        petclinic_endpoint_content must contain '502 bad gateway'.
+        Output '{{petclinic_endpoint_content.stdout}}'
+
+  - name:     Retrieve content on port 81 (no endpoint defined)
+    shell:    curl http://localhost:81
+    ignore_errors: true
+    register: no_endpoint_content
+
+  # - name:     Display no_endpoint_content
+    # debug:
+      # msg: '{{no_endpoint_content}}'
+
+  - name:     Ensure no endpoint content is correct
+    assert:
+      that:
+        - (no_endpoint_content.stderr | lower) is regex("connection refused")
+      msg: |
+        no_endpoint_content must contain 'Connection Refused'.
+        Output '{{no_endpoint_content.stderr}}'

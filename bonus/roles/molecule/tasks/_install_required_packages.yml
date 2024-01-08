@@ -1,0 +1,8 @@
+- name: Install molecule required packages
+  become:               yes
+  become_method:        sudo
+  ansible.builtin.apt:
+    name: '{{ molecule__required_package_list_to_install }}'
+    state:              present
+    update_cache:       yes
+    cache_valid_time:   36000

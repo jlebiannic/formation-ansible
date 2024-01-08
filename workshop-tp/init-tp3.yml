@@ -1,0 +1,23 @@
+---
+# ansible-playbook -i localhost workshop-tp/init-tp3.yml
+- hosts: localhost
+  tasks:
+    - name: Copy TP2 answers for TP3 workshop
+      become:                          yes
+      become_method:                   sudo
+      ansible.builtin.copy:
+        # /!\ le repertoire finit avec / => on copie le contenu de tp2 dans tp3
+        src: /home/ansible/workspace/workshop-tp-answers/tp2/
+        dest: /home/ansible/workspace/workshop-tp/tp3
+        group: ansible
+        owner: ansible
+
+    - name: Copy TP2 dev inventory for TP3 workshop
+      become:                          yes
+      become_method:                   sudo
+      ansible.builtin.copy:
+        # /!\ le repertoire ne finit pas avec / => on copie le repertoire tp2 dans dev
+        src: /home/ansible/workspace/workshop-tp-answers/inventories/dev/tp2
+        dest: /home/ansible/workspace/workshop-tp/inventories/dev
+        group: ansible
+        owner: ansible

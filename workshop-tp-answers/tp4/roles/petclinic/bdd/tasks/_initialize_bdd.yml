@@ -1,0 +1,23 @@
+- name: Create petclinic user
+  postgresql_user:
+    name: petclinic
+    password: petclinic
+    encrypted: yes
+    port: 5432
+    state: present
+    login_host: bdddev01
+    login_user: postgres
+    login_password: postgres
+
+
+- name: Create petclinic database
+  postgresql_db:
+    name: petclinic
+    encoding: "UTF-8"
+    owner: petclinic
+    port: 5432
+    state: present
+    login_host: bdddev01
+    login_user: postgres
+    login_password: postgres
+    

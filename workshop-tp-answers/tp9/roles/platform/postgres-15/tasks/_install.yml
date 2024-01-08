@@ -1,0 +1,50 @@
+- name:                                Add an Postgresqo Apt Repository signing key
+  become:                              yes
+  become_method:                       sudo
+  ansible.builtin.apt_key:
+    url:                               https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state:                             present
+
+- name:                            Add Postgresql repository into sources list
+  become:                          yes
+  become_method:                   sudo
+  ansible.builtin.apt_repository:
+    repo:                          "deb http://apt.postgresql.org/pub/repos/apt {{ ansible_distribution_release | lower}}-pgdg main"
+    state:                         present
+
+- name:                            Install Postgresql
+  become:                          yes
+  become_method:                   sudo
+  ansible.builtin.apt:
+    name:
+      - postgresql-15
+      - postgresql-client-15
+      - acl
+    state:                         present
+    update_cache:                  '{{ apt_update_cache }}'
+    cache_valid_time:              '{{ apt_cache_ttl }}'
+
+- name:                            Ensure group '{{ platform_postgres_15__admin_user_group }}' exists
+  ansible.builtin.group:
+    name:                          '{{ platform_postgres_15__admin_user_group }}'
+    state:                         present
+
+- name:                            Add the linux user '{{ platform_postgres_15__admin_user }}' and  primary group '{{ platform_postgres_15__admin_user_group }}'
+  #password contient la valeur cryptée du password (postgres dans le cas present). Peut etre obtenu via
+  # ansible all -i localhost, -m debug -a "msg={{ 'postgres' | password_hash('sha512', 'mysecretsalt') }}"
+  become:                          yes
+  become_method:                   sudo
+  ansible.builtin.user:
+    name:                          '{{platform_postgres_15__admin_user}}'
+    password:                      '{{ platform_postgres_15__admin_password_sha512_hash }}'
+    comment:                       postgres admin
+    group:                         '{{ platform_postgres_15__admin_user_group }}'
+    system:                        yes
+
+- name:                            Define Postgresql as a Service
+  become:                          yes
+  become_method:                   sudo
+  ansible.builtin.service:
+    name:                          postgresql
+    state:                         started
+    enabled:                       yes

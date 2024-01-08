@@ -1,0 +1,16 @@
+---
+# === DEBIAN ansible_os_family
+
+- name:                       Ensure virtualenv is installed
+  pip:
+    name:                     virtualenv
+    executable:               pip3
+
+- name: >
+    Ensure python package '{{ molecule__python_package_list_to_install }}' are installed,
+    using virtualenv path '{{ molecule__virtualenv_dir }}'
+  pip:
+    name:                     '{{ molecule__python_package_list_to_install }}'
+    virtualenv:               '{{ molecule__virtualenv_dir }}'
+    virtualenv_site_packages: yes
+    virtualenv_command: ~/.local/bin/virtualenv

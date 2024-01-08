@@ -1,0 +1,77 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# to launch all the VM of the file :
+# set ANSIBLE_STDOUT_CALLBACK=debug
+# set VAGRANT_VAGRANTFILE=workshop-answers\tp9\vagrantfile_windows
+# vagrant up
+
+# to launch one VM of the file (ie demo_web01) :
+# set ANSIBLE_STDOUT_CALLBACK=debug
+# set VAGRANT_VAGRANTFILE=workshop-answers\tp9\vagrantfile_windows
+# vagrant up appdev01
+
+# TIPS  ANSIBLE_STDOUT_CALLBACK=debug => human readeable logs
+
+# To connect via ssh to lbdev01, 3 ways :
+# vagrant ssh lbdev01
+# ssh -i .vagrant.d/insecure_private_key -p 2211 vagrant@127.0.0.1
+# ssh -i .vagrant.d/insecure_private_key -p 22 vagrant@172.28.128.11
+
+
+Vagrant.configure('2') do |config|
+
+  config.ssh.insert_key = false
+  config.ssh.verify_host_key = :never
+  config.ssh.forward_agent = true
+  # en cas de pb de téléchargement de box lié à The revocation function is unable to check revocation for the certificate
+  #config.vm.box_download_insecure=true 
+
+  # ==== LB DEV 01 ===== #
+
+  config.vm.define 'lbdev01' do |lbdev01|
+    lbdev01.vm.hostname = 'lbdev01'
+    lbdev01.vm.box = 'ubuntu/focal64'
+    lbdev01.vm.allow_hosts_modification = true
+    lbdev01.vm.network 'private_network', ip: '172.28.128.11', hostname: true
+    lbdev01.vm.network 'forwarded_port', id: 'ssh', guest: 22, host: 2211
+    lbdev01.vm.network 'forwarded_port', id: 'http', guest: 90, host: 90
+    lbdev01.vm.provider 'virtualbox' do |vb|
+      vb.name = lbdev01.vm.hostname
+      vb.memory = 2048
+      vb.cpus = 2
+    end
+    lbdev01.vm.provision 'ansible_local' do |ansible|
+      ansible.raw_arguments = ['--connection=local']
+      ansible.verbose = 'v'
+      ansible.playbook = 'workshop-answers/tp9/setup-petclinic-env.yml'
+      ansible.inventory_path = 'workshop-answers/inventories/_vagrant/inventory.yml'
+    end
+    lbdev01.vm.post_up_message = '*** VM lbdev01 ready ***'
+  end
+
+  # ==== APP DEV 01 ===== #
+
+  config.vm.define 'appdev01' do |appdev01|
+    appdev01.vm.hostname = 'appdev01'
+    appdev01.vm.box = 'ubuntu/focal64'
+    #appdev01.vm.box = 'bento/centos-8.2'
+    appdev01.vm.allow_hosts_modification = true
+    appdev01.vm.network 'private_network', ip: '172.28.128.21', hostname: true
+    appdev01.vm.network 'forwarded_port', id: 'ssh', guest: 22, host: 2221
+    appdev01.vm.network 'forwarded_port', id: 'http', guest: 8080, host: 8080
+    appdev01.vm.provider 'virtualbox' do |vb|
+      vb.name = appdev01.vm.hostname
+      vb.memory = 2048
+      vb.cpus = 2
+    end
+    appdev01.vm.provision 'ansible_local' do |ansible|
+      ansible.raw_arguments = ['--connection=local']
+      ansible.verbose = 'v'
+      ansible.playbook = 'workshop-answers/tp9/setup-petclinic-env.yml'
+      ansible.inventory_path = 'workshop-answers/inventories/_vagrant/inventory.yml'
+    end
+    appdev01.vm.post_up_message = '*** VM appdev01 ready ***'
+  end
+
+end

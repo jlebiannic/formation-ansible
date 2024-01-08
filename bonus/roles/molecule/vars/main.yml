@@ -1,0 +1,12 @@
+molecule__required_package_list_to_install:
+ - libssl-dev
+ - python3-pip
+
+molecule__python_package_list_to_install:
+ - molecule
+ - yamllint
+ - ansible-lint
+# - molecule-docker
+ - molecule-podman
+ - pytest-testinfra
+# - molecule-vagrant

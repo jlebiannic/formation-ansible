@@ -1,0 +1,21 @@
+---
+# ansible-playbook -i localhost workshop-tp/init-tp4.yml
+- hosts: localhost
+  tasks:
+    - name: Copy answers for workshop
+      become:                          yes
+      become_method:                   sudo
+      ansible.builtin.copy:
+        src: /home/ansible/workspace/workshop-tp-answers/tp3/
+        dest: /home/ansible/workspace/workshop-tp/tp4
+        group: ansible
+        owner: ansible
+
+    - name: Copy dev inventory for workshop
+      become:                          yes
+      become_method:                   sudo
+      ansible.builtin.copy:
+        src: /home/ansible/workspace/workshop-tp-answers/inventories/dev/tp3
+        dest: /home/ansible/workspace/workshop-tp/inventories/dev
+        group: ansible
+        owner: ansible

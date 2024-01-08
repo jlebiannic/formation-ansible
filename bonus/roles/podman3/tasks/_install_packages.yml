@@ -1,0 +1,28 @@
+- name: Add podman3 Apt Repository signing key
+  become:               yes
+  become_method:        sudo
+  ansible.builtin.apt_key:
+    url:  '{{ podman3__apt_key_url }}'
+    state: present
+
+- name: Add podman3 repository into sources list
+  become:               yes
+  become_method:        sudo
+  ansible.builtin.apt_repository:
+    repo:  '{{ podman3__apt_repository }}'
+    state: present
+
+- name: Install podman3
+  become:               yes
+  become_method:        sudo
+  ansible.builtin.apt:
+    name:  '{{ podman3__package_list }}'
+    state:              present
+    update_cache:       yes
+    cache_valid_time:   36000
+
+# - name: Run 'Hello World' image
+  # containers.podman.podman_container:
+    # name: container
+    # image: hello-world
+    # state: started

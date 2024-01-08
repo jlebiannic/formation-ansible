@@ -1,0 +1,26 @@
+petclinic_loadbalancer_servers:
+  hosts:
+    lbdev01:
+
+petclinic_database_servers:
+  hosts:
+    bdddev01:
+      ansible_connection:            local
+      
+petclinic_application_servers:
+  hosts:
+    appdev01:
+
+petclinic_servers:
+  children:
+    petclinic_loadbalancer_servers:
+    petclinic_database_servers:
+    petclinic_application_servers:
+
+# Inventaire naif
+# petclinic_servers:
+  # hosts:
+    # lbdev01:
+      # ansible_connection:            local
+    # appdev01:
+      # ansible_connection:            local

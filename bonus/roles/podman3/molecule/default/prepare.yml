@@ -1,0 +1,10 @@
+---
+- name: Prepare Ubuntu Hosts
+  hosts: ubuntu*
+  tasks:
+    - name: Ensure GPG-Agent is installed
+      become:               yes
+      become_method:        sudo
+      apt:
+        name:               'gpg-agent'
+        update_cache:       true

@@ -1,0 +1,14 @@
+petclinic_loadbalancer_servers:
+  hosts:
+    ubuntu2004:
+    debian11:
+
+petclinic_application_servers:
+  hosts:
+    ubuntu2004:
+    debian11:
+
+petclinic_servers:
+  children:
+    petclinic_loadbalancer_servers:
+    petclinic_application_servers:

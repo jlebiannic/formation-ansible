@@ -1,0 +1,6 @@
+petclinic_bdd__port: 5432
+petclinic_bdd__user: 'petclinic'
+petclinic_bdd__database_name: 'petclinic'
+
+# variables devant etre définies au niveau de l'inventaire
+#petclinic_bdd__password: 'petclinic_bdd__password undefined'

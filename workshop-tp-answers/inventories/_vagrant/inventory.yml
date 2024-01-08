@@ -1,0 +1,32 @@
+petclinic_loadbalancer_servers:
+  hosts:
+    lbdev01:
+      ansible_host:                  172.28.128.11
+
+petclinic_database_servers:
+  hosts:
+    appdev01:
+      ansible_host:                  172.28.128.21
+
+petclinic_application_servers:
+  hosts:
+    appdev01:
+      # ansible_connection:            local
+      # ansible_host:                  172.28.128.21
+
+petclinic_servers:
+  # pour autoriser une connexion depuis une machine 'ansible' vers une VM vagrant
+  # (utile lorsque le fichier de conf vagrant ne s'appuie pas sur un ansible local à la VM vagrant)
+  # insecure_private_key est à copier dans le répertoire .vagrant du projet (dispo sous ~/.vagrant.d)
+  # vars:
+    # ansible_user: vagrant
+    # ansible_ssh_private_key_file: .vagrant/insecure_private_key
+    # ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+  children:
+    petclinic_loadbalancer_servers:
+    petclinic_database_servers:
+    petclinic_application_servers:
+
+postgresql_servers:
+  children:
+    petclinic_database_servers:

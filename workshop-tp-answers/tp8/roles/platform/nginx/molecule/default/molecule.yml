@@ -1,0 +1,65 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: podman
+platforms:
+
+  - name:                 debian11
+    # voir https://github.com/geerlingguy/docker-debian11-ansible pour le detail du dockerfile
+    image:                geerlingguy/docker-debian11-ansible
+    pre_build_image:      true # inutile de builder l'image à partir d'un fichier dockerfile
+    ## Podman inside Docker 
+    ## voir https://ansible.readthedocs.io/projects/molecule/examples/
+    ## (n'est pas utile avec la version actuelle d'Azure) 
+    #cgroup_manager: cgroupfs
+    #storage_opt: overlay.mount_program=/usr/bin/fuse-overlayfs
+    #storage_driver: overlay
+    ## Systemd Container 
+    ## voir https://ansible.readthedocs.io/projects/molecule/examples/
+    ## (n'est pas utile avec la version actuelle d'Azure) 
+    privileged:           false
+    command:              ${MOLECULE_DOCKER_COMMAND:-"sleep infinity"}
+    #tmpfs:
+    #  - /run
+    #  - /tmp
+    #volumes:
+    #  - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  - name:                 ubuntu2004
+    image:                geerlingguy/docker-ubuntu2004-ansible
+    pre_build_image:      true # inutile de builder l'image à partir d'un fichier dockerfile
+    ## Podman inside Docker 
+    ## voir https://ansible.readthedocs.io/projects/molecule/examples/
+    ## (n'est pas utile avec la version actuelle d'Azure) 
+    #cgroup_manager: cgroupfs
+    #storage_opt: overlay.mount_program=/usr/bin/fuse-overlayfs
+    #storage_driver: overlay
+    ## Systemd Container 
+    ## voir https://ansible.readthedocs.io/projects/molecule/examples/
+    ## (n'est pas utile avec la version actuelle d'Azure) 
+    privileged:           false
+    command:              ${MOLECULE_DOCKER_COMMAND:-"sleep infinity"}
+    #tmpfs:
+    #  - /run
+    #  - /tmp
+    #volumes:
+    #  - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+provisioner:
+  name: ansible
+  options:
+    vv: true
+  config_options:
+    defaults:
+      interpreter_python: auto_silent
+      callback_enabled: profile_tasks, timer, yaml
+  env:
+    ANSIBLE_ROLES_PATH:   "../../../../../roles" # utile pour forcer le répertoire des roles lors d'arborescence non standard
+verifier:
+  name: ansible
+lint: |
+  set -e
+  ansible-lint .
+# yamllint .
+#

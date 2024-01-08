@@ -1,0 +1,21 @@
+
+- name:                            Create the postgresql user '{{ petclinic_bdd__user }}'
+  # pour verifier :                sudo -u postgres psql -p5432 -c 'SELECT rolname from pg_roles'
+  # il existe aussi une collection postgresql pour réaliser ce type d'action, cf https://docs.ansible.com/ansible/2.8/modules/postgresql_membership_module.html
+  # > ansible-galaxy collection install community.postgresql
+  # attention, la collection n'est pas supportée par les équipes postgresql.
+  become:                          yes
+  become_method:                   sudo
+  become_user:                     '{{ platform_postgres_15__admin_user }}'
+  ignore_errors:                   yes # la creation du role echoue si le role existe deja
+  ansible.builtin.command:
+    cmd:                           psql -p{{ petclinic_bdd__port }} -c "CREATE USER {{ petclinic_bdd__user }} WITH LOGIN PASSWORD '{{ petclinic_bdd__password }}'"
+
+- name:                            Create postgresql database '{{ petclinic_bdd__database_name }}'
+  # pour verifier :                sudo -u postgres psql -p5432 -c 'SELECT datname FROM pg_database'
+  become:                          yes
+  become_method:                   sudo
+  become_user:                     '{{ platform_postgres_15__admin_user }}'
+  ignore_errors:                   yes # la creation de la base echoue si la base existe deja
+  ansible.builtin.command:
+    cmd:                           psql -p'{{ petclinic_bdd__port }}' -c "CREATE DATABASE {{ petclinic_bdd__database_name }} OWNER {{ petclinic_bdd__user }}"

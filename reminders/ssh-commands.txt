@@ -1,0 +1,15 @@
+ssh-keygen
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub ansible@appdev01
+ssh-copy-id -i ~/.ssh/id_rsa.pub ansible@lbdev01
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub ansible@webrec01
+ssh-copy-id -i ~/.ssh/id_rsa.pub ansible@webrec02
+ssh-copy-id -i ~/.ssh/id_rsa.pub ansible@lbrec01
+
+ssh ansible@appdev01
+...
+
+
+autre commande sans avoir besoin de mettre le mot de passe:
+sshpass -p 'ansible' ssh-copy-id -i ~/.ssh/id_rsa.pub ansible@appdev01

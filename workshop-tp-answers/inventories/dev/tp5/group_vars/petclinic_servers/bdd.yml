@@ -1,0 +1,5 @@
+petclinic_bdd__host: bdddev01
+petclinic_bdd__port: 5432
+petclinic_bdd__database_name: petclinic_bdd_tp5
+petclinic_bdd__user: petclinic_user_tp5
+petclinic_bdd__password: petclinic_pwd_tp5

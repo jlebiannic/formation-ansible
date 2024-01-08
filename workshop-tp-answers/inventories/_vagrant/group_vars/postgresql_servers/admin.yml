@@ -1,0 +1,6 @@
+platform_postgres_15__admin_user: postgres
+petclinic_bdd__port: 5432
+# !! a commenter pour le TP7, ex avec vault
+platform_postgres_15__admin_password_sha512_hash: $6$mysecretsalt$jbtTFsaFfwbIGnQ6vksNRUI.FPfVpVzMrMSOYmgCDgMs9Q/UchOwEt7YzaECJ4PKmIwrG0qTFfTAqQpRmee8V/
+# !! a commenter avant le TP7, ex avec vault
+# platform_postgres_15__admin_password_sha512_hash: '{{ bdd_vault__platform_postgres_15__admin_password_sha512_hash }}'

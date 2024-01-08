@@ -1,0 +1,6 @@
+platform_postgres_15__port: 5432
+
+platform_postgres_15__admin_user: postgres
+platform_postgres_15__admin_user_group: postgres
+# variables devant etre définies au niveau de l'inventaire
+# platform_postgres_15__admin_password_sha512_hash: $6$mysecretsalt$jbtTFsaFfwbIGnQ6vksNRUI.FPfVpVzMrMSOYmgCDgMs9Q/UchOwEt7YzaECJ4PKmIwrG0qTFfTAqQpRmee8V/

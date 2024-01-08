@@ -1,0 +1,21 @@
+
+# ansible-playbook -i workshop-tp-answers/inventories/_vagrant workshop-tp-answers/tp9/setup-petclinic-env.yml --ask-become-pass --connection=local --limit appdev01
+# faire de meme pour les autres hosts / groupes
+# ansible-playbook -i workshop-tp-answers/inventories/_vagrant workshop-tp-answers/tp9/setup-petclinic-env.yml --ask-become-pass --tags tag_disable_petclinic --connection=local --limit lbdev01
+- name:       setup petclinic database
+  hosts:
+  - petclinic_database_servers
+  roles:
+  - petclinic/bdd
+
+- name:       setup petclinic application
+  hosts:
+  - petclinic_application_servers
+  roles:
+  - petclinic/app
+
+- name:       setup petclinic load balancer
+  hosts:
+  - petclinic_loadbalancer_servers
+  roles:
+  - petclinic/lb

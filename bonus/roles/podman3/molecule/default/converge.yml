@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    #shared_tasks_dir: '../../../../../shared/tasks'
+  tasks:
+    - name: "include podman3"
+      include_role:
+        name: "podman3"

@@ -1,0 +1,34 @@
+
+# ansible-playbook -i workshop-tp-answers/inventories/dev/tp7 workshop-tp-answers/tp7/setup-petclinic-env.yml --ask-become-pass --vault-id bdd@workshop-tp-answers/inventories/dev/tp7/secrets/bdd_vault.pwd
+# ansible-playbook -i workshop-tp-answers/inventories/dev/tp7 workshop-tp-answers/tp7/setup-petclinic-env.yml --ask-become-pass --tags tag_disable_petclinic
+
+# pour dechiffrer les fichiers vaults contenant les variables :
+# cd workshop-tp-answers/inventories/dev/tp7
+# ansible-vault decrypt group_vars/petclinic_servers/bdd_vault.yml --vault-id bdd@secrets/bdd_vault.pwd
+# ansible-vault decrypt group_vars/postgresql_servers/admin_vault.yml --vault-id bdd@secrets/bdd_vault.pwd
+
+# pour chiffrer les fichiers vaults contenant les variables :
+# cd workshop-tp-answers/inventories/dev/tp7
+# ansible-vault encrypt group_vars/petclinic_servers/bdd_vault.yml --vault-id bdd@secrets/bdd_vault.pwd
+# ansible-vault encrypt group_vars/postgresql_servers/admin_vault.yml --vault-id bdd@secrets/bdd_vault.pwd
+
+
+- name:       setup petclinic database
+  gather_facts: false
+  connection: local
+  hosts:
+  - petclinic_database_servers
+  roles:
+  - petclinic/bdd
+
+- name:       setup petclinic application
+  hosts:
+  - petclinic_application_servers
+  roles:
+  - petclinic/app
+
+- name:       setup petclinic load balancer
+  hosts:
+  - petclinic_loadbalancer_servers
+  roles:
+  - petclinic/lb

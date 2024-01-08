@@ -1,0 +1,17 @@
+galaxy_info:
+  role_name: podman3
+  author: academy_staff
+  description: role for podman3 installation
+  company: Sopra Steria Group
+
+  license: Sopra Steria Group Internal Use
+
+  min_ansible_version: 2.9
+
+  platforms:
+  - name: ubuntu
+    versions:
+    - 20.04
+
+  galaxy_tags:
+    - container

@@ -1,0 +1,26 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name:     Retrieve Podman version
+    shell:    podman --version
+    register: podman_version
+
+  - name:     Ensure Podman version '{{podman_version.stdout}}' is correct
+    assert:
+      that:
+        - (podman_version.stdout | lower) is regex("podman version 3\.")
+      msg: |
+        Podman major version has to be equal to 3.
+        Version output '{{podman_version.stdout}}'
+
+  # - name: Run 'Hello World' image
+    # containers.podman.podman_container:
+      # name: container
+      # image: hello-world
+      # state: started
+  # KO =>  Can't pull image hello-world
+  # Error: kernel does not support overlay fs:
+    # 'overlay' is not supported over extfs at /var/lib/containers/storage/overlay:
+    # backing file system is unsupported for this graph driver

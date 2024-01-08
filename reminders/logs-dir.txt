@@ -1,0 +1,5 @@
+nginx : 
+sudo tail -f  /var/log/nginx/access.log
+
+app : 
+tail -f /home/ansible/petclinic/logs/petclinic-postgresql.log

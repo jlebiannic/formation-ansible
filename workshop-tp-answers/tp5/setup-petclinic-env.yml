@@ -1,0 +1,22 @@
+
+# ansible-playbook -i workshop-tp-answers/inventories/dev/tp5 workshop-tp-answers/tp5/setup-petclinic-env.yml
+
+- name:       setup petclinic database
+  gather_facts: false
+  connection: local
+  hosts:
+  - petclinic_database_servers
+  roles:
+  - petclinic/bdd
+
+- name:       setup petclinic application
+  hosts:
+  - petclinic_application_servers
+  roles:
+  - petclinic/app
+
+- name:       setup petclinic load balancer
+  hosts:
+  - petclinic_loadbalancer_servers
+  roles:
+  - petclinic/lb

@@ -1,0 +1,12 @@
+
+- name: Disable petclinic website
+  become:                    yes
+  become_method:             sudo
+  ansible.builtin.file:
+    path:                    '{{ platform_nginx__mountpoint }}/nginx/sites-enabled/petclinic.conf'
+    state:                   absent
+  notify:
+  - event__petclinic_lb__configuration_changed
+  tags:
+  - never
+  - tag_disable_petclinic

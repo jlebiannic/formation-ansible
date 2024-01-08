@@ -1,0 +1,3 @@
+
+build_petclinic_src_dir: ~/_src/spring-petclinic
+build_git_repo_root_dir: ~/_git

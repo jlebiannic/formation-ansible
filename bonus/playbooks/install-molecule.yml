@@ -1,0 +1,8 @@
+---
+# ansible-playbook  bonus/playbooks/install-molecule.yml --ask-become-pass -vv
+# si erreur lié à pip3; tester > sudo pip3 install --upgrade  
+- name:  molecule playbook installation
+  hosts:
+  - localhost
+  roles:
+  - bonus/roles/molecule

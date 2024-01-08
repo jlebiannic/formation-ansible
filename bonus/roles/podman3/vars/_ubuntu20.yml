@@ -1,0 +1,6 @@
+
+podman3__apt_key_url: >
+  https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_20.04/Release.key
+
+podman3__apt_repository: >
+  deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /

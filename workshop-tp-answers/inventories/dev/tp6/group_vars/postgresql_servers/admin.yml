@@ -1,0 +1,3 @@
+platform_postgres_15__admin_user: postgres
+platform_postgres_15__admin_password: postgres
+

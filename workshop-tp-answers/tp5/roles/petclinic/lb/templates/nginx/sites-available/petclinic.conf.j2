@@ -1,0 +1,15 @@
+
+upstream petclinic {
+  # server app...:8080;
+  {% for application_server in groups['petclinic_application_servers'] %}
+  server {{ hostvars[application_server]['upstream_ip'] | default('var "upstream_ip" not defined' ) }}:{{petclinic_app__port}};
+  {% endfor %}
+}
+
+server {
+  listen {{ petclinic_lb__port }};
+  error_log /var/log/nginx/petclinic.error.log {{ petclinic_lb__log_verbosity }};
+  location / {
+    proxy_pass http://petclinic;
+  }
+}

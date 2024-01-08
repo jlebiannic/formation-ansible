@@ -1,0 +1,14 @@
+---
+# ansible-playbook -i workshop-tp-answers/inventories/dev/tp7 workshop-tp-answers/tp7/run-petclinic-with-postgresql-db.yml
+- hosts: petclinic_application_servers
+  tasks:
+    - name:     shutdown PetClinic, if launched
+      command:
+        chdir:  /apps/petclinic
+        cmd:    sh scripts/stop-petclinic.sh
+      ignore_errors:  yes
+
+    - name:     run PetClinic
+      command:
+        chdir:  /apps/petclinic
+        cmd:    sh scripts/start-petclinic-postgresql-db.sh {{ petclinic_app__port }} {{ petclinic_bdd__database_name }} {{ petclinic_bdd__user }} {{ petclinic_bdd__password }} {{ petclinic_bdd__host }}

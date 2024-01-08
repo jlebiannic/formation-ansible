@@ -1,0 +1,22 @@
+
+- name: Create {{ petclinic_bdd__user }} user
+  postgresql_user:
+    name:     '{{ petclinic_bdd__user }}'
+    password: '{{ petclinic_bdd__password }}'
+    encrypted: yes
+    port: '{{ petclinic_bdd__port }}'
+    state: present
+    login_host: '{{ petclinic_bdd__host }}'
+    login_user: '{{ platform_postgres_15__admin_user }}'
+    login_password: '{{ platform_postgres_15__admin_password }}'
+
+- name: Create {{ petclinic_bdd__database_name }} database
+  postgresql_db:
+    name: '{{ petclinic_bdd__database_name }}'
+    encoding: "UTF-8"
+    owner: '{{ petclinic_bdd__user }}'
+    port:  '{{ petclinic_bdd__port }}'
+    state: present
+    login_host: '{{ petclinic_bdd__host }}'
+    login_user: '{{ platform_postgres_15__admin_user }}'
+    login_password: '{{ platform_postgres_15__admin_password }}'

@@ -1,0 +1,23 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name:     Retrieve nginx version
+    shell:    nginx -v
+    register: nginx_version
+
+  # utile pour comprendre pourquoi nginx_version.stdout ne contenait rien et que le test molecule echouait
+  # alors que la commande nginx -v après un molecule login restituait l'info correctement
+  # - name:     Display nginx_version
+    # debug:
+      # msg: '{{nginx_version}}'
+
+  - name:     Ensure nginx version '{{nginx_version.stderr}}' is correct
+    # bizarrement, nginx -v alimente stderr et non stdout. Identifié en affichant le contenu de la variable (cf tache en commentaire ci dessus)
+    assert:
+      that:
+        - (nginx_version.stderr | lower) is regex("nginx/1.18")
+      msg: |
+        Nginx version has to be equal to 1.18.
+        Version output '{{nginx_version.stderr}}'

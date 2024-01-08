@@ -1,0 +1,13 @@
+---
+- name:                    Prepare
+  hosts:                   all
+  gather_facts:            false
+  tasks:
+    - name:                Install Curl
+      become:              yes
+      become_method:       sudo
+      ansible.builtin.apt:
+        name:              curl
+        state:             present
+        update_cache:      '{{ apt_update_cache }}'
+        cache_valid_time:  '{{ apt_cache_ttl }}'

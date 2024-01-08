@@ -1,0 +1,17 @@
+---
+# ansible-playbook -i workshop-tp-answers/inventories/_vagrant workshop-tp-answers/tp9/run-petclinic-with-postgresql-db.yml --connection=local --limit petclinic_application_servers
+- hosts:
+  - petclinic_application_servers
+  tasks:
+  - name: run PetClinic, access via http://localhost:{{ petclinic_app__port }}/
+    command:
+      chdir:  /home/ansible/petclinic/binaries
+      cmd: >
+        java
+        -Dspring.profiles.active=postgres
+        -DPOSTGRES_URL=jdbc:postgresql://{{ petclinic_bdd__server }}:{{ petclinic_bdd__port }}/{{ petclinic_bdd__database_name }}
+        -Dspring.datasource.username={{ petclinic_bdd__user }}
+        -Dspring.datasource.password={{ petclinic_bdd__password }}
+        -jar spring-petclinic.jar
+        --server.port={{ petclinic_app__port }}
+        --logging.file.name=log/petclinic-tp9.log
