@@ -1,0 +1,10 @@
+# test le ping sur tous les hosts (utilisation du module ansible ping)
+ansible all –i ./inventories/dev –m ping 
+
+ansible-playbook -i ../inventories/dev/tp3 setup-petclinic-env.yml
+ansible-playbook -i ../inventories/dev/tp3 setup-petclinic-env.yml  --limit lbdev01
+
+source ~/.venv/molecule/bin/activate
+ansible-lint --write
+deactivate
+

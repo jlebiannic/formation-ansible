@@ -18,6 +18,6 @@
       ansible.builtin.copy:
         # /!\ le repertoire ne finit pas avec / => on copie le repertoire tp2 dans dev
         src: /home/ansible/workspace/workshop-tp-answers/inventories/dev/tp2
-        dest: /home/ansible/workspace/workshop-tp/inventories/dev
+        dest: /home/ansible/workspace/workshop-tp/inventories/dev/tp3
         group: ansible
         owner: ansible
