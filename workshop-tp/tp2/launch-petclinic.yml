@@ -1,0 +1,8 @@
+- hosts: petclinic_application_servers
+  tasks:
+    - name: Démarrage des serveurs applicatifs web
+      become: true
+      ansible.builtin.command:
+        chdir: /apps/petclinic/
+        cmd: "sh scripts/start-petclinic-postgresql-db.sh"
+          

@@ -107,17 +107,20 @@
       ansible.builtin.copy:
        src: /home/ansible/workspace/start-petclinic-inmemory-db.sh
        dest: /apps/petclinic/scripts/
+       mode: '0777'
 
     - name: Copy start-petclinic-postgresql-db.sh
       become: true
       ansible.builtin.copy:
        src: /home/ansible/workspace/start-petclinic-postgresql-db.sh
-       dest: /apps/petclinic/scripts/    
+       dest: /apps/petclinic/scripts/
+       mode: '0777'
 
     - name: Copy stop-petclinic.sh
       become: true
       ansible.builtin.copy:
        src: /home/ansible/workspace/stop-petclinic.sh
-       dest: /apps/petclinic/scripts/             
+       dest: /apps/petclinic/scripts/ 
+       mode: '0777'
 
 

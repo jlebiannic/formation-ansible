@@ -1,6 +1,6 @@
 petclinic_loadbalancer_servers:
   hosts:
-    lbdev01:
+    lbrec01:
 
 petclinic_application_servers:
   hosts:
