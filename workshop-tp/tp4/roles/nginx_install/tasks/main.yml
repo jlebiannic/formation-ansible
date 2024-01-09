@@ -1,0 +1,43 @@
+---
+# tasks file for nginx_install
+- name:                            Install Nginx
+  become:                          true
+  become_method:                   sudo
+  ansible.builtin.apt:
+    name:                          nginx
+    state:                         present
+    update_cache:                  true
+    cache_valid_time:              86340
+
+- name:                            Define Nginx as a Service
+  become:                          true
+  become_method:                   sudo
+  ansible.builtin.service:
+    name:                          nginx
+    state:                         started
+    enabled:                       true
+
+- name:                            Copy petclinic nginx conf to nginx sites-available
+  become:                          true
+  become_method:                   sudo
+  ansible.builtin.copy:
+    src:                           nginx-petclinic.conf
+    dest:                          /etc/nginx/sites-available/petclinic.conf
+  notify:
+  - event__nginx__configuration_changed
+
+- name:                            Validate nginx configuration
+  become:                          true
+  become_method:                   sudo
+  ansible.builtin.command:
+    cmd:                           nginx -t
+
+- name:                            Enable petclinic site to be served by nginx
+  become:                          true
+  become_method:                   sudo
+  ansible.builtin.file:
+    src:                           /etc/nginx/sites-available/petclinic.conf
+    dest:                          /etc/nginx/sites-enabled/petclinic.conf
+    state:                         link
+  notify:
+  - event__nginx__configuration_changed

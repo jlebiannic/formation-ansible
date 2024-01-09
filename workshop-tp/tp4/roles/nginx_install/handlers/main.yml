@@ -1,0 +1,8 @@
+---
+# handlers file for nginx_install
+- name:                            event__nginx__configuration_changed
+  become:                          true
+  become_method:                   sudo
+  ansible.builtin.service:
+    name:                          nginx
+    state:                         reloaded
