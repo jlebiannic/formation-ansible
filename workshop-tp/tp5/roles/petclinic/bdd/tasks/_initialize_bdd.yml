@@ -1,0 +1,22 @@
+- name: Create petclinic user
+  postgresql_user:
+    name: '{{user_name}}'
+    password: '{{user_password}}'
+    encrypted: yes
+    port: '{{db_port}}'
+    state: present
+    login_host: '{{login_host}}'
+    login_user: '{{login_user}}'
+    login_password: '{{login_password}}'
+
+
+- name: Create petclinic database
+  postgresql_db:
+    name: '{{db_name}}'
+    encoding: "UTF-8"
+    owner: '{{db_owner}}'
+    port: '{{db_port}}'
+    state: present
+    login_host: '{{login_host}}'
+    login_user: '{{login_user}}'
+    login_password: '{{login_password}}'

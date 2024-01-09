@@ -1,15 +1,15 @@
 petclinic_loadbalancer_servers:
   hosts:
-    lbdev01:
+    lbrec01:
 
 petclinic_database_servers:
   hosts:
-    bdddev01:
+    bddrec01:
       ansible_connection:            local
 
 petclinic_application_servers:
   hosts:
-    appdev01:
+    webrec[01:02]:
 
 petclinic_servers:
   children:

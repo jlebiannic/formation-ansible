@@ -8,3 +8,4 @@ source ~/.venv/molecule/bin/activate
 ansible-lint --write
 deactivate
 
+ansible-inventory -i ../inventories/dev/tp5/ --graph --vars

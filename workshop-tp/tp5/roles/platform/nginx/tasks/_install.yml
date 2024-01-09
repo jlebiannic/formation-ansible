@@ -1,0 +1,16 @@
+- name:                            Install Nginx
+  become:                          yes
+  become_method:                   sudo
+  ansible.builtin.apt:
+    name:                          nginx
+    state:                         present
+    update_cache:                  yes
+    cache_valid_time:              86340
+
+- name:                            Define Nginx as a Service
+  become:                          yes
+  become_method:                   sudo
+  ansible.builtin.service:
+    name:                          nginx
+    state:                         started
+    enabled:                       yes

@@ -1,0 +1,10 @@
+user_name: petclinic
+user_password: petclinic
+
+login_host: bddrec01
+login_user: postgres
+login_password: postgres    
+
+db_name: petclinic
+db_port: 5432
+db_owner: petclinic
