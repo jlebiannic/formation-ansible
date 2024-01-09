@@ -1,59 +1,58 @@
 ---
 # ansible-playbook -i workshop-tp-answers/inventories/dev/tp2 workshop-tp-answers/tp2/setup-petclinic-env.yml --ask-become-pass -vv
-- hosts:                               petclinic_loadbalancer_servers
+- hosts: petclinic_loadbalancer_servers
   tasks:
-    - name:                            Install Nginx
-      become:                          yes
-      become_method:                   sudo
+    - name: Install Nginx
+      become: true
+      become_method: sudo
       ansible.builtin.apt:
-        name:                          nginx
-        state:                         present
-        update_cache:                  yes
-        cache_valid_time:              86340
+        name: nginx
+        state: present
+        update_cache: true
+        cache_valid_time: 86340
 
-    - name:                            Define Nginx as a Service
-      become:                          yes
-      become_method:                   sudo
+    - name: Define Nginx as a Service
+      become: true
+      become_method: sudo
       ansible.builtin.service:
-        name:                          nginx
-        state:                         started
-        enabled:                       yes
+        name: nginx
+        state: started
+        enabled: true
 
-    - name:                            Copy petclinic nginx conf to nginx sites-available
-      become:                          yes
-      become_method:                   sudo
+    - name: Copy petclinic nginx conf to nginx sites-available
+      become: true
+      become_method: sudo
       ansible.builtin.copy:
-        src:                           nginx-petclinic.conf
-        dest:                          /etc/nginx/sites-available/petclinic.conf
+        src: nginx-petclinic.conf
+        dest: /etc/nginx/sites-available/petclinic.conf
       notify:
         - Restart nginx
 
-    - name:                            Enable petclinic site to be served by nginx
-      become:                          yes
-      become_method:                   sudo
+    - name: Enable petclinic site to be served by nginx
+      become: true
+      become_method: sudo
       ansible.builtin.file:
-        src:                           /etc/nginx/sites-available/petclinic.conf
-        dest:                          /etc/nginx/sites-enabled/petclinic.conf
-        state:                         link
+        src: /etc/nginx/sites-available/petclinic.conf
+        dest: /etc/nginx/sites-enabled/petclinic.conf
+        state: link
 
   handlers:
-    - name:                            Listen Validate nginx configuration
-      listen:                          Restart nginx
-      become:                          yes
-      become_method:                   sudo
+    - name: Listen Validate nginx configuration
+      listen: Restart nginx
+      become: true
+      become_method: sudo
       ansible.builtin.command:
-        cmd:                           nginx -t
+        cmd: nginx -t
 
-    - name:                            Listen Restart nginx
-      listen:                          Restart nginx
-      become:                          yes
-      become_method:                   sudo
+    - name: Listen Restart nginx
+      listen: Restart nginx
+      become: true
+      become_method: sudo
       ansible.builtin.service:
-        name:                          nginx
-        state:                         reloaded
+        name: nginx
+        state: reloaded
 
-
-- hosts:                               petclinic_database_servers
+- hosts: petclinic_database_servers
   gather_facts: false
   connection: local
   tasks:
@@ -65,7 +64,7 @@
       postgresql_user:
         name: petclinic
         password: petclinic
-        encrypted: yes
+        encrypted: true
         port: 5432
         state: present
         login_host: bdddev01
@@ -75,7 +74,7 @@
     - name: Create petclinic database
       postgresql_db:
         name: petclinic
-        encoding: "UTF-8"
+        encoding: UTF-8
         owner: petclinic
         port: 5432
         state: present
@@ -83,57 +82,57 @@
         login_user: postgres
         login_password: postgres
 
-- hosts:                               petclinic_application_servers
+- hosts: petclinic_application_servers
   tasks:
-    - name:                            Install OpenJdk
-      become:                          yes
-      become_method:                   sudo
+    - name: Install OpenJdk
+      become: true
+      become_method: sudo
       ansible.builtin.apt:
-        name:                          openjdk-17-jdk
-        state:                         present
-        update_cache:                  yes
-        cache_valid_time:              86340
+        name: openjdk-17-jdk
+        state: present
+        update_cache: true
+        cache_valid_time: 86340
 
     - name: Creates /apps/petclinic/binaries directory for petclinic deployment
-      become:                          yes
-      become_method:                   sudo
+      become: true
+      become_method: sudo
       ansible.builtin.file:
         path: /apps/petclinic/binaries
         state: directory
-        recurse: yes
-        
+        recurse: true
+
     - name: Creates /apps/petclinic/scripts directory for petclinic deployment
-      become:                          yes
-      become_method:                   sudo
+      become: true
+      become_method: sudo
       ansible.builtin.file:
         path: /apps/petclinic/scripts
         state: directory
-        recurse: yes
+        recurse: true
 
     - name: Copy binary for petclinic deployment
-      become:                          yes
-      become_method:                   sudo
+      become: true
+      become_method: sudo
       ansible.builtin.copy:
         src: /home/ansible/petclinic/binaries/spring-petclinic.jar
         dest: /apps/petclinic/binaries/spring-petclinic.jar
- 
+
     - name: Copy start-petclinic-inmemory-db.sh for petclinic deployment
-      become:                          yes
-      become_method:                   sudo
+      become: true
+      become_method: sudo
       ansible.builtin.copy:
         src: /home/ansible/workspace/start-petclinic-inmemory-db.sh
         dest: /apps/petclinic/scripts/start-petclinic-inmemory-db.sh
 
     - name: Copy start-petclinic-postgresql-db.sh for petclinic deployment
-      become:                          yes
-      become_method:                   sudo
+      become: true
+      become_method: sudo
       ansible.builtin.copy:
         src: /home/ansible/workspace/start-petclinic-postgresql-db.sh
         dest: /apps/petclinic/scripts/start-petclinic-postgresql-db.sh
 
     - name: Copy stop-petclinic.sh for petclinic deployment
-      become:                          yes
-      become_method:                   sudo
+      become: true
+      become_method: sudo
       ansible.builtin.copy:
         src: /home/ansible/workspace/stop-petclinic.sh
         dest: /apps/petclinic/scripts/stop-petclinic.sh

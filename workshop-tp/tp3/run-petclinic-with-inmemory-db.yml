@@ -1,14 +1,14 @@
 ---
 # ansible-playbook -i workshop-tp-answers/inventories/dev/tp2 workshop-tp-answers/tp2/run-petclinic-with-inmemory-db.yml
-- hosts:        petclinic_application_servers
+- hosts: petclinic_application_servers
   tasks:
-    - name:     shutdown PetClinic, if launched
+    - name: shutdown PetClinic, if launched
       command:
-        chdir:  /apps/petclinic
-        cmd:    sh scripts/stop-petclinic.sh
-      ignore_errors:  yes
+        chdir: /apps/petclinic
+        cmd: sh scripts/stop-petclinic.sh
+      ignore_errors: true
 
-    - name:     run PetClinic
+    - name: run PetClinic
       command:
-        chdir:  /apps/petclinic
-        cmd:    sh scripts/start-petclinic-inmemory-db.sh
+        chdir: /apps/petclinic
+        cmd: sh scripts/start-petclinic-inmemory-db.sh
