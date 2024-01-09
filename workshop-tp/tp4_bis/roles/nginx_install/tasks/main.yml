@@ -1,0 +1,18 @@
+---
+# tasks file for nginx_install
+- name:                            Install Nginx
+  become:                          true
+  become_method:                   sudo
+  ansible.builtin.apt:
+    name:                          nginx
+    state:                         present
+    update_cache:                  true
+    cache_valid_time:              86340
+
+- name:                            Define Nginx as a Service
+  become:                          true
+  become_method:                   sudo
+  ansible.builtin.service:
+    name:                          nginx
+    state:                         started
+    enabled:                       true

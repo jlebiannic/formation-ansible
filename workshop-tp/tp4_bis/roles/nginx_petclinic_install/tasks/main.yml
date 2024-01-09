@@ -1,0 +1,26 @@
+---
+# tasks file for nginx_install
+- name:                            Copy petclinic nginx conf to nginx sites-available
+  become:                          true
+  become_method:                   sudo
+  ansible.builtin.copy:
+    src:                           nginx-petclinic.conf
+    dest:                          /etc/nginx/sites-available/petclinic.conf
+  notify:
+  - event__nginx__configuration_changed
+
+- name:                            Validate nginx configuration
+  become:                          true
+  become_method:                   sudo
+  ansible.builtin.command:
+    cmd:                           nginx -t
+
+- name:                            Enable petclinic site to be served by nginx
+  become:                          true
+  become_method:                   sudo
+  ansible.builtin.file:
+    src:                           /etc/nginx/sites-available/petclinic.conf
+    dest:                          /etc/nginx/sites-enabled/petclinic.conf
+    state:                         link
+  notify:
+  - event__nginx__configuration_changed
