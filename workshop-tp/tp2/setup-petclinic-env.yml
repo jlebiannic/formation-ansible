@@ -3,7 +3,7 @@
 
 - hosts: petclinic_loadbalancer_servers
   tasks:
-# Install Nginx - module apt ou package
+    # Install Nginx - module apt ou package
     - name: Install Nginx
       become: true
       package:
@@ -19,8 +19,8 @@
     - name: Nginx Configuration
       become: true
       ansible.builtin.copy:
-       src: nginx-petclinic.conf 
-       dest: /etc/nginx/sites-available/petclinic.conf
+        src: nginx-petclinic.conf
+        dest: /etc/nginx/sites-available/petclinic.conf
 
     - name: Validate nginx configuration
       become: true
@@ -28,14 +28,13 @@
         cmd: nginx -t
       register: result
     - debug: msg="result={{result.rc}}"
-        
 
     - name: Enable petclinic site to be served by nginx (make a link)
       become: true
       ansible.builtin.file:
         src: /etc/nginx/sites-available/petclinic.conf
         dest: /etc/nginx/sites-enabled/petclinic.conf
-        state: link        
+        state: link
 
     - name: Force nginx conf reload
       become: true
@@ -67,7 +66,7 @@
     - name: Create petclinic database
       community.postgresql.postgresql_db:
         name: petclinic
-        encoding: "UTF-8"
+        encoding: UTF-8
         owner: petclinic
         port: 5432
         state: present
@@ -83,7 +82,7 @@
       apt:
         name: openjdk-17-jdk
         state: present
-    
+
     - name: Creates binaries directory
       become: true
       ansible.builtin.file:
@@ -91,7 +90,7 @@
         state: directory
 
     - name: Creates scripts directory
-      become: true    
+      become: true
       ansible.builtin.file:
         path: /apps/petclinic/scripts
         state: directory
@@ -99,28 +98,26 @@
     - name: Copy binary for petclinic
       become: true
       ansible.builtin.copy:
-       src: /home/ansible/petclinic/binaries/ 
-       dest: /apps/petclinic/binaries/
+        src: /home/ansible/petclinic/binaries/
+        dest: /apps/petclinic/binaries/
 
     - name: Copy start-petclinic-inmemory-db.sh
       become: true
       ansible.builtin.copy:
-       src: /home/ansible/workspace/start-petclinic-inmemory-db.sh
-       dest: /apps/petclinic/scripts/
-       mode: '0777'
+        src: /home/ansible/workspace/start-petclinic-inmemory-db.sh
+        dest: /apps/petclinic/scripts/
+        mode: "0777"
 
     - name: Copy start-petclinic-postgresql-db.sh
       become: true
       ansible.builtin.copy:
-       src: /home/ansible/workspace/start-petclinic-postgresql-db.sh
-       dest: /apps/petclinic/scripts/
-       mode: '0777'
+        src: /home/ansible/workspace/start-petclinic-postgresql-db.sh
+        dest: /apps/petclinic/scripts/
+        mode: "0777"
 
     - name: Copy stop-petclinic.sh
       become: true
       ansible.builtin.copy:
-       src: /home/ansible/workspace/stop-petclinic.sh
-       dest: /apps/petclinic/scripts/ 
-       mode: '0777'
-
-
+        src: /home/ansible/workspace/stop-petclinic.sh
+        dest: /apps/petclinic/scripts/
+        mode: "0777"
