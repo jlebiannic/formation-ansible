@@ -1,0 +1,1 @@
+pgrep -f spring-petclinic.jar | xargs kill

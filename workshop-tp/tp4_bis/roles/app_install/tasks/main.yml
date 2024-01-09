@@ -36,19 +36,19 @@
   become:                          true
   become_method:                   sudo
   ansible.builtin.copy:
-    src: /home/ansible/workspace/start-petclinic-inmemory-db.sh
+    src: start-petclinic-inmemory-db.sh
     dest: /apps/petclinic/scripts/start-petclinic-inmemory-db.sh
 
 - name: Copy start-petclinic-postgresql-db.sh for petclinic deployment
   become:                          true
   become_method:                   sudo
   ansible.builtin.copy:
-    src: /home/ansible/workspace/start-petclinic-postgresql-db.sh
+    src: start-petclinic-postgresql-db.sh
     dest: /apps/petclinic/scripts/start-petclinic-postgresql-db.sh
 
 - name: Copy stop-petclinic.sh for petclinic deployment
   become:                          true
   become_method:                   sudo
   ansible.builtin.copy:
-    src: /home/ansible/workspace/stop-petclinic.sh
+    src: stop-petclinic.sh
     dest: /apps/petclinic/scripts/stop-petclinic.sh
