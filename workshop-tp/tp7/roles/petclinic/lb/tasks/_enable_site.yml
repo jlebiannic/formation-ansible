@@ -1,0 +1,29 @@
+
+- name: Enable petclinic website
+  become:                    yes
+  become_method:             sudo
+  block:
+  - name:                      Produce petclinic nginx conf to nginx sites-available
+    ansible.builtin.template:
+      src:                     templates/nginx/sites-available/petclinic.conf.j2
+      dest:                    '{{ platform_nginx__mountpoint }}/nginx/sites-available/petclinic.conf'
+    notify:
+    - event__petclinic_lb__configuration_changed
+    register: petclinic_lb_conf_generation
+
+  # Illustration de l'instruction register pour assurer l'idempotence sur une instruction command
+  # on ne lance la validation que si la configuration a fait l'objet d'une modification
+  - name:                      Validate nginx configuration
+    ansible.builtin.command:
+      cmd:                     nginx -t
+    when: petclinic_lb_conf_generation.changed
+
+  - name:                      Enable petclinic site to be served by nginx
+    ansible.builtin.file:
+      src:                     '{{ platform_nginx__mountpoint }}/nginx/sites-available/petclinic.conf'
+      dest:                    '{{ platform_nginx__mountpoint }}/nginx/sites-enabled/petclinic.conf'
+      state:                   link
+    notify:
+    - event__petclinic_lb__configuration_changed
+  tags:
+  - tag_enable_petclinic

@@ -8,4 +8,27 @@ source ~/.venv/molecule/bin/activate
 ansible-lint --write
 deactivate
 
+molecule init scenario _my_scenario
+molecule matrix test (liste des étapes, test = toutes les étapes)
+molecule matrix converge
+molecule test (execution d'une étape, test = toutes les étapes)
+molecule list (état pour les hôtes et scenario)
+molecule login --host debian11
+molecule verify
+molecule idempotence
+molecule destroy
+
+
 ansible-inventory -i ../inventories/dev/tp5/ --graph --vars
+
+ansible-vault encrypt ../inventories/dev/tp7/group_vars/postgresql_servers/admin_vault.yml --vault-id vault_formation@../inventories/dev/tp7/secrets/vault_formation.pwd 
+
+# sans vault id
+ansible-playbook -i ../inventories/dev/tp7/ setup-petclinic-env.yml 
+-e @../inventories/dev/tp7/group_vars/petclinic_servers/bdd_vault.yml 
+-e @../inventories/dev/tp7/group_vars/postgresql_servers/admin_vault.yml --vault-password-file ../inventories/dev/tp7/secrets/vault_formation.pwd
+
+# avec vault id
+ansible-playbook -i ../inventories/dev/tp7/ setup-petclinic-env.yml --vault-id vault_formation@../inventories/dev/tp7/secrets/vault_formation.pwd
+
+

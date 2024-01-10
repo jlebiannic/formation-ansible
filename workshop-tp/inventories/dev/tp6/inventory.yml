@@ -17,8 +17,6 @@ petclinic_servers:
     petclinic_database_servers:
     petclinic_application_servers:
 
-# utile pour le TP5 : contient le user/mot de passe de l'admin postgres
 postgresql_servers:
   children:
     petclinic_database_servers:
-

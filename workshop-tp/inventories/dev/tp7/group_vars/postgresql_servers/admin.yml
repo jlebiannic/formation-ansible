@@ -1,0 +1,4 @@
+platform_postgres_15__admin_user: postgres
+platform_postgres_15__admin_password: '{{ bdd_vault__platform_postgres_15__admin_password }}'
+
+#useless platform_postgres_15__admin_password_sha512_hash: '{{ bdd_vault__platform_postgres_15__admin_password_sha512_hash }}'

@@ -1,0 +1,10 @@
+- name:                            Define Nginx as a Service
+  become:                          yes
+  become_method:                   sudo
+  ansible.builtin.service:
+    name:                          nginx
+    state:                         stopped
+    enabled:                       yes
+  tags:
+  - never
+  - stop_nginx

@@ -1,10 +1,5 @@
-user_name: petclinic
-user_password: petclinic
-
-login_host: bdddev01
-login_user: postgres
-login_password: postgres    
-
-db_name: petclinic
-db_port: 5432
-db_owner: petclinic
+petclinic_bdd__host: bdddev01
+petclinic_bdd__port: 5432
+petclinic_bdd__database_name: petclinic_bdd_tp5
+petclinic_bdd__user: petclinic_user_tp5
+petclinic_bdd__password: petclinic_pwd_tp5

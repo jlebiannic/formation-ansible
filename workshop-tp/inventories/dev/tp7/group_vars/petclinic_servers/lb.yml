@@ -1,0 +1,2 @@
+petclinic_lb__port: 8080
+petclinic_lb__log_verbosity: debug

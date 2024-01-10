@@ -1,0 +1,27 @@
+- name: Enable site
+  become:                    true
+  become_method:             sudo
+  block:
+  - name:                      Produce petclinic nginx conf to nginx sites-available
+    ansible.builtin.template:
+      src:                     templates/nginx/sites-available/petclinic.conf.j2
+      dest:                    '{{ platform_nginx__mountpoint }}/nginx/sites-available/petclinic.conf'
+    notify:
+    - event__petclinic_lb__configuration_changed
+    register: nginx_conf
+
+  - name:                      Validate nginx configuration
+    ansible.builtin.command:
+      cmd:                     nginx -t
+    when: nginx_conf.changed
+
+  - name:                      Enable petclinic site to be served by nginx
+    ansible.builtin.file:
+      src:                     '{{ platform_nginx__mountpoint }}/nginx/sites-available/petclinic.conf'
+      dest:                    '{{ platform_nginx__mountpoint }}/nginx/sites-enabled/petclinic.conf'
+      state:                   link
+    notify:
+    - event__petclinic_lb__configuration_changed
+  tags: 
+  - enable_petclinic
+    
