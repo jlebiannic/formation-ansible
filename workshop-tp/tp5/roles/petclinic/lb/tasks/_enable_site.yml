@@ -1,8 +1,8 @@
 - name:                            Copy petclinic nginx conf to nginx sites-available
   become:                          yes
   become_method:                   sudo
-  ansible.builtin.copy:
-    src:                           files/nginx/sites-available/petclinic.conf
+  ansible.builtin.template:
+    src:                           template/nginx/sites-available/petclinic.conf.j2
     dest:                          /etc/nginx/sites-available/petclinic.conf
   notify:
   - event__petclinic_lb__configuration_changed

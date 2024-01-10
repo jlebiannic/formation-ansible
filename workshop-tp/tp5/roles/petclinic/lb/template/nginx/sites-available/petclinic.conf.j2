@@ -1,0 +1,14 @@
+
+upstream petclinic {
+  {% for server_name in {{ip_upstream}} %}
+  server {{ server_name }}:{{petclinic_app_port}};
+  {% endfor %}
+}
+
+server {
+  listen {{ petclinic_app_port }};
+  error_log /var/log/nginx/petclinic.error.log debug;
+  location / {
+    proxy_pass http://petclinic;
+  }
+}
